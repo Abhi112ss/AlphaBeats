@@ -1,0 +1,5 @@
+{
+  "buildCommand": "turbo run build --filter=client...",
+  "outputDirectory": ".next",
+  "framework": "nextjs"
+}

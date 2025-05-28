@@ -487,7 +487,7 @@ export const SyncProgress = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Beatsync calibrating
+            Calibrating AlphaBeats
           </motion.h2>
 
           <motion.p

@@ -12,199 +12,482 @@ interface LeftProps {
 }
 
 export const Left = ({ className }: LeftProps) => {
-  // const shareRoom = () => {
-  //   try {
-  //     navigator.share({
-  //       title: "Join my BeatSync room",
-  //       text: `Join my BeatSync room with code: ${roomId}`,
-  //       url: window.location.href,
-  //     });
-  //   } catch {
-  //     copyRoomId();
-  //   }
-  // };
-
   return (
-    <motion.div
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={cn(
-        "w-full lg:w-72 flex-shrink-0 relative overflow-hidden flex flex-col h-full text-sm group",
-        "scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-emerald-500/20 scrollbar-track-transparent hover:scrollbar-thumb-emerald-500/40",
-        "overflow-y-auto",
-        className
-      )}
-    >
-      {/* Futuristic background layers */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-xl" />
-      
-      {/* Animated border */}
-      <div className="absolute right-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-emerald-500/30 via-violet-500/40 to-emerald-500/30 group-hover:from-emerald-400/50 group-hover:via-violet-400/60 group-hover:to-emerald-400/50 transition-all duration-700" />
-      
-      {/* Floating orb decorations */}
-      <div className="absolute top-6 right-4 w-2 h-2 rounded-full bg-emerald-400/40 animate-pulse shadow-[0_0_12px_rgba(52,211,153,0.4)]" />
-      <div className="absolute top-20 right-2 w-1.5 h-1.5 rounded-full bg-violet-400/30 animate-pulse shadow-[0_0_8px_rgba(167,139,250,0.3)]" style={{ animationDelay: "0.5s" }} />
-      
-      {/* Corner accent lines */}
-      <div className="absolute top-0 left-0 w-12 h-12">
-        <div className="absolute top-3 left-3 w-6 h-[1px] bg-gradient-to-r from-emerald-400/60 to-transparent" />
-        <div className="absolute top-3 left-3 w-[1px] h-6 bg-gradient-to-b from-emerald-400/60 to-transparent" />
-      </div>
+    <>
+      {/* Global Bellota Font */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bellota:wght@300;400;700&display=swap');
+        
+        .bellota-font {
+          font-family: 'Bellota', cursive;
+        }
+        
+        /* Custom scrollbar styling */
+        .cyber-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .cyber-scrollbar::-webkit-scrollbar-track {
+          background: rgba(0, 255, 170, 0.1);
+          border-radius: 10px;
+        }
+        
+        .cyber-scrollbar::-webkit-scrollbar-thumb {
+          background: linear-gradient(45deg, #00ffcc, #7c3aed);
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+        }
+        
+        .cyber-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(45deg, #00ffaa, #4b006e);
+          box-shadow: 0 0 15px rgba(0, 255, 170, 0.8);
+        }
+        
+        /* Floating particle animation */
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          33% { transform: translateY(-10px) rotate(120deg); }
+          66% { transform: translateY(5px) rotate(240deg); }
+        }
+        
+        .float-particle {
+          animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Cyber glow pulse */
+        @keyframes cyber-pulse {
+          0%, 100% { 
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.4), 
+                        0 0 40px rgba(0, 255, 204, 0.2),
+                        inset 0 0 20px rgba(0, 255, 204, 0.1);
+          }
+          50% { 
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8), 
+                        0 0 60px rgba(0, 255, 204, 0.4),
+                        inset 0 0 30px rgba(0, 255, 204, 0.2);
+          }
+        }
+        
+        .cyber-glow {
+          animation: cyber-pulse 3s ease-in-out infinite;
+        }
+        
+        /* Holographic shimmer effect */
+        @keyframes hologram-shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        
+        .hologram-text {
+          background: linear-gradient(
+            90deg,
+            #00ffcc 0%,
+            #00ffaa 25%,
+            #7c3aed 50%,
+            #4b006e 75%,
+            #00ffcc 100%
+          );
+          background-size: 200% auto;
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: hologram-shimmer 3s linear infinite;
+        }
+        
+        /* Neural network lines */
+        @keyframes neural-pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+        
+        .neural-line {
+          animation: neural-pulse 2s ease-in-out infinite;
+        }
+      `}</style>
 
-      {/* Header Section with holographic styling */}
-      <motion.div 
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-        className="relative z-10 px-4 py-4"
-      >
-        <h2 className="text-lg font-bold select-none flex items-center gap-3 group-hover:scale-105 transition-transform duration-300">
-          {/* Holographic icon */}
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400/20 to-violet-400/20 border border-emerald-400/30 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(52,211,153,0.2)]">
-            <div className="w-3 h-3 rounded-md bg-gradient-to-br from-emerald-400 to-teal-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.6)]" />
-          </div>
-          
-          <span className="bg-gradient-to-r from-emerald-400 via-green-300 to-teal-400 bg-clip-text text-transparent font-extrabold tracking-wide">
-            YOUR LIBRARY
-          </span>
-          
-          {/* Animated accent line */}
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-emerald-400/50 to-transparent group-hover:from-emerald-400/80 transition-all duration-500" />
-        </h2>
-      </motion.div>
-
-      {/* Navigation Menu with enhanced futuristic styling */}
-      <motion.div 
-        initial={{ y: 10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-        className="relative z-10 px-4 space-y-3 py-2"
-      >
-        <Button
-          className="w-full flex justify-start gap-4 py-3 text-white font-semibold rounded-xl text-sm transition-all duration-300 group/btn relative overflow-hidden border border-emerald-500/20 hover:border-emerald-400/40 hover:scale-105 hover:shadow-[0_0_25px_rgba(52,211,153,0.3)]"
-          variant="ghost"
-          style={{
-            background: "linear-gradient(135deg, rgba(52,211,153,0.15) 0%, rgba(16,185,129,0.10) 50%, rgba(5,150,105,0.15) 100%)",
-          }}
-        >
-          {/* Scanning line effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 rounded-xl" />
-          
-          {/* Icon with glow */}
-          <div className="relative z-10 p-1 rounded-md bg-emerald-400/20 shadow-[0_0_10px_rgba(52,211,153,0.4)]">
-            <Library className="h-4 w-4 text-emerald-300" />
-          </div>
-          
-          <span className="relative z-10 tracking-wide">Default Library</span>
-          
-          {/* Corner accent */}
-          <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-emerald-400/30 rounded-tr-md" />
-        </Button>
-
-        <a href="https://cobalt.tools/" target="_blank">
-          <Button
-            className="w-full flex justify-start gap-4 py-3 text-white font-semibold rounded-xl text-sm transition-all duration-300 group/btn relative overflow-hidden border border-violet-500/20 hover:border-violet-400/40 hover:scale-105 hover:shadow-[0_0_25px_rgba(167,139,250,0.3)]"
-            variant="ghost"
-            style={{
-              background: "linear-gradient(135deg, rgba(167,139,250,0.15) 0%, rgba(147,51,234,0.10) 50%, rgba(126,34,206,0.15) 100%)",
-            }}
-          >
-            {/* Scanning line effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-400/20 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000 rounded-xl" />
-            
-            {/* Icon with glow */}
-            <div className="relative z-10 p-1 rounded-md bg-violet-400/20 shadow-[0_0_10px_rgba(167,139,250,0.4)]">
-              <Search className="h-4 w-4 text-violet-300" />
-            </div>
-            
-            <span className="relative z-10 tracking-wide">Search Music</span>
-            
-            {/* Corner accent */}
-            <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-violet-400/30 rounded-tr-md" />
-          </Button>
-        </a>
-      </motion.div>
-
-      {/* Enhanced Separator */}
-      <div className="relative z-10 mx-4 my-4">
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent" />
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-3 h-3 -mt-1.5">
-          <div className="w-full h-full rounded-full bg-gradient-to-br from-emerald-400/60 to-violet-400/40 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.4)]" />
-        </div>
-      </div>
-
-      {/* Audio Controls */}
       <motion.div
-        initial={{ y: 10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
-        className="relative z-10"
+        initial={{ x: -50, opacity: 0, scale: 0.95 }}
+        animate={{ x: 0, opacity: 1, scale: 1 }}
+        transition={{ 
+          duration: 0.8, 
+          ease: [0.25, 0.46, 0.45, 0.94],
+          type: "spring",
+          stiffness: 100
+        }}
+        className={cn(
+          "w-full lg:w-72 flex-shrink-0 relative overflow-hidden flex flex-col h-full text-sm group bellota-font cyber-scrollbar",
+          "overflow-y-auto",
+          className
+        )}
       >
-        <AudioControls />
-      </motion.div>
-
-      {/* Tips Section with futuristic styling */}
-      <motion.div 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="relative z-10 mt-auto pb-4 pt-2"
-      >
-        <div className="flex flex-col gap-4 p-4">
-          {/* Enhanced border */}
-          <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-teal-400/30 to-transparent" />
-          
-          {/* Tips header with holographic styling */}
-          <div className="flex items-center gap-3 mt-2">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-teal-400/20 to-emerald-400/20 border border-teal-400/30 flex items-center justify-center backdrop-blur-sm">
-              <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(45,212,191,0.6)]" />
-            </div>
-            <h5 className="text-sm font-bold text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text tracking-wide">
-              SYSTEM TIPS
-            </h5>
-          </div>
-          
-          {/* Enhanced tips list */}
-          <ul className="space-y-3 pl-2">
-            {[
-              "Works best with multiple devices IRL in the same space.",
-              "If audio gets de-synced, pause, play / full sync and try again or refresh.",
-              "Play on speaker directly. Don't use Bluetooth."
-            ].map((tip, index) => (
-              <motion.li
-                key={index}
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.6 + index * 0.1, duration: 0.4 }}
-                className="flex items-start gap-3 group/tip hover:scale-105 transition-transform duration-300"
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-teal-400 to-emerald-400 mt-2 shadow-[0_0_6px_rgba(45,212,191,0.5)] group-hover/tip:shadow-[0_0_10px_rgba(45,212,191,0.8)] transition-all duration-300" />
-                <span className="text-xs leading-relaxed text-slate-300 group-hover/tip:text-slate-200 transition-colors duration-300">
-                  {tip}
-                </span>
-              </motion.li>
-            ))}
-          </ul>
+        {/* Advanced futuristic background with multiple layers */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/98 via-indigo-950/95 to-slate-900/98 backdrop-blur-2xl" />
+        
+        {/* Cyber grid overlay */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 204, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 204, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px'
+          }}
+        />
+        
+        {/* Animated holographic border with neural network effect */}
+        <div className="absolute right-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-transparent via-cyan-400/60 to-transparent">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-b from-cyan-300/80 via-violet-400/80 to-cyan-300/80"
+            animate={{
+              opacity: [0.4, 1, 0.4],
+              scaleY: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </div>
+        
+        {/* Dynamic floating particles with enhanced glow */}
+        <div className="absolute top-8 right-6 w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400 float-particle cyber-glow" />
+        <div className="absolute top-24 right-3 w-2 h-2 rounded-full bg-gradient-to-r from-violet-400 to-purple-400 float-particle cyber-glow" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-40 right-8 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-emerald-300 to-cyan-300 float-particle" style={{ animationDelay: "2s" }} />
+        
+        {/* Enhanced corner accent with neural lines */}
+        <div className="absolute top-0 left-0 w-16 h-16">
+          <div className="absolute top-4 left-4 w-8 h-[2px] bg-gradient-to-r from-cyan-400/80 via-emerald-400/60 to-transparent neural-line" />
+          <div className="absolute top-4 left-4 w-[2px] h-8 bg-gradient-to-b from-cyan-400/80 via-emerald-400/60 to-transparent neural-line" style={{ animationDelay: "0.5s" }} />
+          <div className="absolute top-6 left-6 w-4 h-4 border border-cyan-400/40 rounded-full animate-ping" style={{ animationDuration: "3s" }} />
         </div>
 
-        {/* Audio Uploader with enhanced styling */}
+        {/* Header Section with advanced holographic styling */}
         <motion.div 
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.4 }}
-          className="pl-4 pr-2"
+          initial={{ y: -20, opacity: 0, rotateX: -15 }}
+          animate={{ y: 0, opacity: 1, rotateX: 0 }}
+          transition={{ delay: 0.3, duration: 0.8, ease: "backOut" }}
+          className="relative z-10 px-6 py-6"
         >
-          <AudioUploaderMinimal />
+          <motion.h2 
+            className="text-xl font-bold select-none flex items-center gap-4 group-hover:scale-110 transition-all duration-500"
+            whileHover={{ scale: 1.05 }}
+          >
+            {/* Enhanced holographic icon with layered effects */}
+            <motion.div 
+              className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400/30 via-emerald-400/20 to-violet-400/30 border-2 border-cyan-400/40 flex items-center justify-center backdrop-blur-xl shadow-[0_0_30px_rgba(0,255,204,0.4)]"
+              whileHover={{ 
+                rotateY: 180,
+                boxShadow: "0 0 50px rgba(0,255,204,0.8)"
+              }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/20 to-violet-300/20 rounded-xl animate-pulse" />
+              <div className="relative w-4 h-4 rounded-lg bg-gradient-to-br from-cyan-400 via-emerald-400 to-teal-400 shadow-[0_0_15px_rgba(0,255,204,0.8)]" />
+              
+              {/* Orbital rings */}
+              <div className="absolute inset-0 border border-cyan-300/30 rounded-xl animate-spin" style={{ animationDuration: "8s" }} />
+              <div className="absolute inset-1 border border-violet-300/20 rounded-lg animate-spin" style={{ animationDuration: "6s", animationDirection: "reverse" }} />
+            </motion.div>
+            
+            <div className="flex flex-col">
+              <motion.span 
+                className="hologram-text font-extrabold text-lg tracking-wider"
+                whileHover={{ scale: 1.1 }}
+              >
+                YOUR LIBRARY
+              </motion.span>
+              <motion.div 
+                className="w-24 h-[2px] bg-gradient-to-r from-cyan-400 via-emerald-400 to-transparent mt-1"
+                initial={{ width: 0 }}
+                animate={{ width: 96 }}
+                transition={{ delay: 0.8, duration: 1 }}
+              />
+            </div>
+          </motion.h2>
         </motion.div>
 
-        {/* Bottom floating particles */}
-        <div className="absolute bottom-2 right-6 flex space-x-2">
-          <div className="w-1 h-1 rounded-full bg-emerald-400/30 animate-ping" style={{ animationDuration: "2s", animationDelay: "0s" }} />
-          <div className="w-1 h-1 rounded-full bg-violet-400/30 animate-ping" style={{ animationDuration: "2s", animationDelay: "0.7s" }} />
-          <div className="w-1 h-1 rounded-full bg-teal-400/30 animate-ping" style={{ animationDuration: "2s", animationDelay: "1.4s" }} />
-        </div>
+        {/* Navigation Menu with cyber-enhanced styling */}
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="relative z-10 px-6 space-y-4 py-3"
+        >
+          <motion.div
+            whileHover={{ scale: 1.03, rotateX: 5 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Button
+              className="w-full flex justify-start gap-4 py-4 text-white font-semibold rounded-2xl text-sm transition-all duration-500 group/btn relative overflow-hidden border-2 border-cyan-400/30 hover:border-cyan-300/60 shadow-[0_0_20px_rgba(0,255,204,0.2)] hover:shadow-[0_0_40px_rgba(0,255,204,0.5)]"
+              variant="ghost"
+              style={{
+                background: "linear-gradient(135deg, rgba(0,255,204,0.15) 0%, rgba(20,184,166,0.10) 30%, rgba(6,182,212,0.15) 70%, rgba(0,255,170,0.10) 100%)",
+              }}
+            >
+              {/* Advanced scanning line effect */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+              />
+              
+              {/* Cyber particles */}
+              <div className="absolute top-2 right-2 w-1 h-1 bg-cyan-400 rounded-full animate-ping opacity-60" />
+              <div className="absolute bottom-2 right-4 w-1 h-1 bg-emerald-400 rounded-full animate-ping opacity-40" style={{ animationDelay: "0.5s" }} />
+              
+              {/* Enhanced icon with multi-layer glow */}
+              <motion.div 
+                className="relative z-10 p-2 rounded-xl bg-gradient-to-br from-cyan-400/30 to-emerald-400/20 shadow-[0_0_20px_rgba(0,255,204,0.6)] border border-cyan-300/40"
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Library className="h-5 w-5 text-cyan-300" />
+              </motion.div>
+              
+              <span className="relative z-10 tracking-wide font-bold bellota-font">Default Library</span>
+              
+              {/* Enhanced corner accents */}
+              <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-cyan-400/50 rounded-tr-lg" />
+              <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-emerald-400/40 rounded-bl-lg" />
+            </Button>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.03, rotateX: 5 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <a href="https://cobalt.tools/" target="_blank">
+              <Button
+                className="w-full flex justify-start gap-4 py-4 text-white font-semibold rounded-2xl text-sm transition-all duration-500 group/btn relative overflow-hidden border-2 border-violet-400/30 hover:border-violet-300/60 shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:shadow-[0_0_40px_rgba(124,58,237,0.5)]"
+                variant="ghost"
+                style={{
+                  background: "linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(147,51,234,0.10) 30%, rgba(168,85,247,0.15) 70%, rgba(75,0,110,0.10) 100%)",
+                }}
+              >
+                {/* Advanced scanning line effect */}
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-400/40 to-transparent"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                />
+                
+                {/* Cyber particles */}
+                <div className="absolute top-2 right-2 w-1 h-1 bg-violet-400 rounded-full animate-ping opacity-60" />
+                <div className="absolute bottom-2 right-4 w-1 h-1 bg-purple-400 rounded-full animate-ping opacity-40" style={{ animationDelay: "0.5s" }} />
+                
+                {/* Enhanced icon with multi-layer glow */}
+                <motion.div 
+                  className="relative z-10 p-2 rounded-xl bg-gradient-to-br from-violet-400/30 to-purple-400/20 shadow-[0_0_20px_rgba(124,58,237,0.6)] border border-violet-300/40"
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <Search className="h-5 w-5 text-violet-300" />
+                </motion.div>
+                
+                <span className="relative z-10 tracking-wide font-bold bellota-font">Search Music</span>
+                
+                {/* Enhanced corner accents */}
+                <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-violet-400/50 rounded-tr-lg" />
+                <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-purple-400/40 rounded-bl-lg" />
+              </Button>
+            </a>
+          </motion.div>
+        </motion.div>
+
+        {/* Enhanced Separator with neural connection */}
+        <motion.div 
+          className="relative z-10 mx-6 my-6"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.7, duration: 1 }}
+        >
+          <div className="h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+          <motion.div 
+            className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4 h-4 -mt-2"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          >
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-400/80 via-emerald-400/60 to-violet-400/80 shadow-[0_0_20px_rgba(0,255,204,0.6)]" />
+            <div className="absolute inset-1 rounded-full border border-white/20" />
+          </motion.div>
+          
+          {/* Neural connection nodes */}
+          <div className="absolute left-1/4 top-0 w-2 h-2 -mt-1 bg-cyan-400/60 rounded-full animate-pulse" />
+          <div className="absolute right-1/4 top-0 w-2 h-2 -mt-1 bg-violet-400/60 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
+        </motion.div>
+
+        {/* Audio Controls with enhanced container */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="relative z-10 px-2"
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-violet-400/10 rounded-2xl blur-xl" />
+            <div className="relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-cyan-400/20 backdrop-blur-xl">
+              <AudioControls />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Enhanced Tips Section */}
+        <motion.div 
+          initial={{ y: 30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="relative z-10 mt-auto pb-6 pt-4"
+        >
+          <div className="flex flex-col gap-6 p-6">
+            {/* Enhanced holographic border */}
+            <motion.div 
+              className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1.2, duration: 0.8 }}
+            />
+            
+            {/* Enhanced tips header */}
+            <motion.div 
+              className="flex items-center gap-4 mt-2"
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div 
+                className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400/30 via-teal-400/20 to-cyan-400/30 border-2 border-emerald-400/40 flex items-center justify-center backdrop-blur-xl shadow-[0_0_25px_rgba(45,212,191,0.5)]"
+                animate={{ rotate: [0, 180, 360] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+              >
+                <div className="w-3 h-3 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-400 shadow-[0_0_15px_rgba(45,212,191,0.8)]" />
+              </motion.div>
+              
+              <motion.h5 
+                className="text-base font-bold hologram-text tracking-wider bellota-font"
+                initial={{ x: -10 }}
+                animate={{ x: 0 }}
+                transition={{ delay: 1.3, duration: 0.5 }}
+              >
+                SYSTEM TIPS
+              </motion.h5>
+              
+              <motion.div 
+                className="flex-1 h-[2px] bg-gradient-to-r from-emerald-400/60 to-transparent"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 1.4, duration: 0.6 }}
+              />
+            </motion.div>
+            
+            {/* Enhanced tips list with cyber styling */}
+            <ul className="space-y-4 pl-2">
+              {[
+                "Works best with multiple devices IRL in the same space.",
+                "If audio gets de-synced, pause, play / full sync and try again or refresh.",
+                "Play on speaker directly. Don't use Bluetooth."
+              ].map((tip, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 1.5 + index * 0.2, duration: 0.6 }}
+                  className="flex items-start gap-4 group/tip"
+                  whileHover={{ scale: 1.03, x: 5 }}
+                >
+                  <motion.div 
+                    className="relative w-2 h-2 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 mt-2 shadow-[0_0_10px_rgba(45,212,191,0.6)]"
+                    animate={{ 
+                      boxShadow: [
+                        "0 0 10px rgba(45,212,191,0.6)",
+                        "0 0 20px rgba(45,212,191,0.9)",
+                        "0 0 10px rgba(45,212,191,0.6)"
+                      ]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  
+                  <span className="text-sm leading-relaxed text-slate-300 group-hover/tip:text-white transition-all duration-300 bellota-font font-medium">
+                    {tip}
+                  </span>
+                  
+                  {/* Subtle hover glow line */}
+                  <motion.div 
+                    className="absolute left-6 right-0 bottom-0 h-[1px] bg-gradient-to-r from-emerald-400/0 to-emerald-400/40 opacity-0 group-hover/tip:opacity-100 transition-opacity duration-300"
+                  />
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Enhanced Audio Uploader */}
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.8, duration: 0.6 }}
+            className="px-6 pr-4"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-violet-400/10 rounded-2xl blur-lg" />
+              <div className="relative">
+                <AudioUploaderMinimal />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Enhanced floating particles constellation */}
+          <div className="absolute bottom-4 right-8 flex space-x-3">
+            {[0, 0.8, 1.6].map((delay, i) => (
+              <motion.div
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full ${
+                  i === 0 ? 'bg-emerald-400/60' : 
+                  i === 1 ? 'bg-violet-400/60' : 'bg-cyan-400/60'
+                }`}
+                animate={{ 
+                  scale: [1, 1.5, 1],
+                  opacity: [0.4, 1, 0.4],
+                  y: [0, -5, 0]
+                }}
+                transition={{ 
+                  duration: 2.5, 
+                  repeat: Infinity, 
+                  delay: delay,
+                  ease: "easeInOut"
+                }}
+                style={{ 
+                  boxShadow: `0 0 10px ${
+                    i === 0 ? 'rgba(45,212,191,0.6)' :
+                    i === 1 ? 'rgba(124,58,237,0.6)' : 'rgba(0,255,204,0.6)'
+                  }`
+                }}
+              />
+            ))}
+          </div>
+          
+          {/* Neural network connection lines */}
+          <svg className="absolute bottom-2 right-4 w-16 h-8 opacity-30">
+            <motion.path
+              d="M0,4 Q8,0 16,4 T32,4"
+              stroke="url(#neuralGradient)"
+              strokeWidth="1"
+              fill="none"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+            />
+            <defs>
+              <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#00ffcc" stopOpacity="0.6" />
+                <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#00ffaa" stopOpacity="0.4" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </>
   );
 };

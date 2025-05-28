@@ -2,13 +2,56 @@
 import { useGlobalStore } from "@/store/global";
 import { useRoomStore } from "@/store/room";
 import { motion } from "motion/react";
+import { useState, useRef, useEffect } from "react";
 
 export const SpatialAudioBackground = () => {
   const userId = useRoomStore((state) => state.userId);
   const spatialConfig = useGlobalStore((state) => state.spatialConfig);
+  const [sliderValue, setSliderValue] = useState(50);
+  
+  // Added scroll functionality
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Get the current user's gain value (0 to 1), default to 0 if not found
   const gain = spatialConfig?.gains[userId]?.gain ?? 0;
+
+  // Added scroll effect handlers
+  useEffect(() => {
+    const updateScrollBounds = () => {
+      if (contentRef.current) {
+        const scrollHeight = contentRef.current.scrollHeight;
+        const clientHeight = contentRef.current.clientHeight;
+        setMaxScroll(Math.max(0, scrollHeight - clientHeight));
+      }
+    };
+
+    updateScrollBounds();
+    window.addEventListener('resize', updateScrollBounds);
+    return () => window.removeEventListener('resize', updateScrollBounds);
+  }, []);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const newScrollPosition = target.scrollTop;
+    setScrollPosition(newScrollPosition);
+  };
+
+  const handleScrollSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    
+    if (contentRef.current && maxScroll > 0) {
+      const scrollTo = (value / 100) * maxScroll;
+      contentRef.current.scrollTop = scrollTo;
+      setScrollPosition(scrollTo);
+    }
+  };
+
+  // Update slider when scrolling manually
+  useEffect(() => {
+    // This effect is handled directly in the slider value prop
+  }, [scrollPosition, maxScroll]);
 
   // If gain is 0, don't render anything
   if (gain <= 0) return null;
@@ -238,6 +281,50 @@ export const SpatialAudioBackground = () => {
           boxShadow: `0 0 35px rgba(34, 197, 94, ${gain * 0.5})`
         }}
       />
+
+      {/* Simple slider component */}
+      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 w-64 z-10">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={sliderValue}
+          onChange={(e) => setSliderValue(parseInt(e.target.value))}
+          className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer slider"
+        />
+      </div>
+
+      {/* Added scroll slider for content */}
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 h-64 z-10">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={maxScroll > 0 ? Math.round((scrollPosition / maxScroll) * 100) : 0}
+          onChange={handleScrollSliderChange}
+          className="w-2 h-64 bg-gray-300 rounded-lg appearance-none cursor-pointer slider transform rotate-90 origin-center"
+          style={{ width: '8px', transformOrigin: 'center' }}
+        />
+      </div>
+
+      {/* Content container that can be scrolled */}
+      <div 
+        ref={contentRef}
+        className="fixed inset-4 overflow-y-auto scrollbar-hide"
+        onScroll={handleScroll}
+        style={{ 
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        }}
+      >
+        {/* Your scrollable content goes here */}
+        <div className="h-[200vh] p-4">
+          {/* This div makes the content taller than the viewport to enable scrolling */}
+          <div className="text-white opacity-50 text-sm">
+            This where the cards or info is stored
+          </div>
+        </div>
+      </div>
     </>
   );
 };
